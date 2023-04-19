@@ -17,9 +17,11 @@ public:
 class GameManager
 {
     Cell **board;
+    int *contents;
 
 public:
     GameManager();
+    void InsertToken(int column, Token token);
     void DisplayBoard();
     ~GameManager();
 };

@@ -1,20 +1,8 @@
 #include "connect.h"
 using namespace std;
-
-Cell::Cell()
-{
-    token = Empty;
-}
-Token Cell::GetToken()
-{
-    return token;
-}
-void Cell::SetToken(Token token)
-{
-    this->token = token;
-}
 GameManager::GameManager()
 {
+    contents = new int[7]();
     board = new Cell *[6];
     for (int i = 0; i < 6; i++)
     {
@@ -45,9 +33,16 @@ void GameManager::DisplayBoard()
 }
 GameManager::~GameManager()
 {
+    delete contents;
     for (int i = 0; i < 7; i++)
     {
         delete board[i];
     }
     delete[] board;
+}
+void GameManager::InsertToken(int column, Token token)
+{
+    if (board[token][6 - contents[token]].GetToken() == Empty)
+        board[token][6 - contents[token]].SetToken(token);
+    contents[token]++;
 }
