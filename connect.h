@@ -1,4 +1,14 @@
 #include <iostream>
+#define MAX_ROWS 6
+#define MAX_COLUMNS 7
+#define WIN_COUNT 4
+enum GameState
+{
+    Playing,
+    Draw,
+    RedWin,
+    BlueWin
+};
 enum Token
 {
     Empty,
@@ -18,10 +28,18 @@ class GameManager
 {
     Cell **board;
     int *contents;
+    bool p1Turn;
+    GameState gameState;
 
 public:
     GameManager();
-    void InsertToken(int column, Token token);
+    bool IsPlayer1();
+    void ChangeTurn();
+    void SetGameState(GameState);
+    GameState GetGameState();
+    bool InsertToken(int, bool);
     void DisplayBoard();
+    bool CheckWin(int, int, Token);
+    bool CheckDraw();
     ~GameManager();
 };
