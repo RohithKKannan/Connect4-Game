@@ -12,14 +12,14 @@ int main()
     {
         do
         {
-            if (col < 0 || col > MAX_COLUMNS)
+            if (col < 1 || col > MAX_COLUMNS)
                 cout << "\nPlease enter valid input";
             if (gameManager.IsPlayer1())
                 cout << "\nPlayer 1 enter a column no. (1 - 7) : ";
             else
                 cout << "\nPlayer 2 enter a column no. (1 - 7) : ";
             cin >> col;
-        } while (col < 0 || col > MAX_COLUMNS);
+        } while (col < 1 || col > MAX_COLUMNS);
         if (!gameManager.InsertToken((col - 1), gameManager.IsPlayer1()))
         {
             gameManager.DisplayBoard();
