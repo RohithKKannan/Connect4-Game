@@ -54,7 +54,7 @@ GameManager::~GameManager()
     delete contents;
     for (int i = 0; i < MAX_COLUMNS; i++)
     {
-        delete board[i];
+        delete[] board[i];
     }
     delete[] board;
 }
@@ -66,11 +66,7 @@ bool GameManager::InsertToken(int column, bool p1Turn)
         return false;
     }
     Token tempToken;
-    if (p1Turn)
-        tempToken = Red;
-    else
-        tempToken = Blue;
-    // p1Turn ? tempToken = Red : tempToken = Blue;
+    p1Turn ? tempToken = Red : tempToken = Blue;
     if (board[(MAX_ROWS - 1) - contents[column]][column].GetToken() == Empty)
         board[(MAX_ROWS - 1) - contents[column]][column].SetToken(tempToken);
     if (CheckWin((MAX_ROWS - 1) - contents[column], column, tempToken))
@@ -94,10 +90,9 @@ bool GameManager::CheckDraw()
     SetGameState(Draw);
     return true;
 }
-bool GameManager::CheckWin(int row, int col, Token currentToken)
+bool GameManager::CheckHorizontal(int row, int col, Token currentToken)
 {
     int count = 0;
-    // Check horizontal
     for (int i = 0; i < MAX_COLUMNS; i++)
     {
         if (board[row][i].GetToken() == currentToken)
@@ -107,8 +102,11 @@ bool GameManager::CheckWin(int row, int col, Token currentToken)
         if (count == WIN_COUNT)
             return true;
     }
-    // Check vertical
-    count = 0;
+    return false;
+}
+bool GameManager::CheckVertical(int row, int col, Token currentToken)
+{
+    int count = 0;
     for (int i = 0; i < MAX_ROWS; i++)
     {
         if (board[i][col].GetToken() == currentToken)
@@ -118,43 +116,117 @@ bool GameManager::CheckWin(int row, int col, Token currentToken)
         if (count == WIN_COUNT)
             return true;
     }
-    // Check LRDiagonal
-    count = 0;
-    // // Upper half
+    return false;
+}
+bool GameManager::CheckDiagonal(int row, int col, Token currentToken)
+{
+    // cout << "\nChecking Diagonal for ";
+    // if (currentToken == Blue)
+    //     cout << "Blue!\n";
+    // else
+    //     cout << "Red!\n";
+    int count = 0;
+    // cout << "\nLeft to Right Diagonal : \n";
+    // cout << "Count : " << count << endl;
     for (int i = row, j = col; i > 0 && j > 0; i--, j--)
     {
         if (board[i][j].GetToken() == currentToken)
+        {
+            // cout << "Token found at row " << i + 1 << " and col " << j + 1 << endl;
+            // cout << "Count : " << count + 1 << endl;
             count++;
+        }
+        else
+        {
+            // cout << "\tToken not found at row " << i + 1 << " and col " << j + 1 << endl;
+            // cout << "\tBreak half\n\n";
+            break;
+        }
         if (count == WIN_COUNT)
+        {
+            // cout << "Count value is four! Winner found!\n";
             return true;
+        }
     }
-    count--;
-    // // Lower half
+    if (count != 0)
+    {
+        // cout << "Decrement count to " << count - 1 << endl;
+        count--;
+    }
     for (int i = row, j = col; i < MAX_ROWS && j < MAX_COLUMNS; i++, j++)
     {
         if (board[i][j].GetToken() == currentToken)
+        {
+            // cout << "Token found at row " << i + 1 << " and col " << j + 1 << endl;
+            // cout << "Count : " << count + 1 << endl;
             count++;
+        }
+        else
+        {
+            // cout << "\tToken not found at row " << i + 1 << " and col " << j + 1 << endl;
+            // cout << "\tBreak half\n\n";
+            break;
+        }
         if (count == WIN_COUNT)
+        {
+            // cout << "Count value is four! Winner found!\n";
             return true;
+        }
     }
-    // Check RLDiagonal
+    // cout << "\n\nRight to Left Diagonal : \n";
+    // cout << "Count : " << count << endl;
     count = 0;
-    // // Upper half
     for (int i = row, j = col; i >= 0 && j < MAX_COLUMNS; i--, j++)
     {
         if (board[i][j].GetToken() == currentToken)
+        {
+            // cout << "Token found at row " << i + 1 << " and col " << j + 1 << endl;
+            // cout << "Count : " << count + 1 << endl;
             count++;
+        }
+        else
+        {
+            // cout << "\tToken not found at row " << i + 1 << " and col " << j + 1 << endl;
+            // cout << "\tBreak half\n\n";
+            break;
+        }
         if (count == WIN_COUNT)
+        {
+            // cout << "Count value is four! Winner found!\n";
             return true;
+        }
     }
-    count--;
-    // // Lower half;
+    if (count != 0)
+    {
+        // cout << "Decrement count to " << count - 1 << endl;
+        count--;
+    }
     for (int i = row, j = col; i < MAX_ROWS && j >= 0; i++, j--)
     {
         if (board[i][j].GetToken() == currentToken)
+        {
+            // cout << "Token found at row " << i + 1 << " and col " << j + 1 << endl;
+            // cout << "Count : " << count + 1 << endl;
             count++;
+        }
+        else
+        {
+            // cout << "\tToken not found at row " << i + 1 << " and col " << j + 1 << endl;
+            // cout << "\tBreak half\n\n";
+            break;
+        }
         if (count == WIN_COUNT)
+        {
+            // cout << "Count value is four! Winner found!\n";
             return true;
+        }
     }
     return false;
+}
+bool GameManager::CheckWin(int row, int col, Token currentToken)
+{
+    if (CheckHorizontal(row, col, currentToken) || CheckVertical(row, col, currentToken) || CheckDiagonal(row, col, currentToken))
+        return true;
+    else
+        return false;
 }

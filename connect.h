@@ -39,6 +39,9 @@ public:
     GameState GetGameState();
     bool InsertToken(int, bool);
     void DisplayBoard();
+    bool CheckHorizontal(int, int, Token);
+    bool CheckVertical(int, int, Token);
+    bool CheckDiagonal(int, int, Token);
     bool CheckWin(int, int, Token);
     bool CheckDraw();
     ~GameManager();
