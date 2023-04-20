@@ -5,21 +5,28 @@ using namespace std;
 int main()
 {
     GameManager gameManager;
+    gameManager.Instructions();
     gameManager.DisplayBoard();
-    int col = 0;
+    int col = 1;
     while (true)
     {
-        if (gameManager.IsPlayer1())
-            cout << "\nPlayer 1 enter a column no. : ";
-        else
-            cout << "\nPlayer 2 enter a column no. : ";
-        cin >> col;
+        do
+        {
+            if (col < 0 || col > MAX_COLUMNS)
+                cout << "\nPlease enter valid input";
+            if (gameManager.IsPlayer1())
+                cout << "\nPlayer 1 enter a column no. (1 - 7) : ";
+            else
+                cout << "\nPlayer 2 enter a column no. (1 - 7) : ";
+            cin >> col;
+        } while (col < 0 || col > MAX_COLUMNS);
         if (!gameManager.InsertToken((col - 1), gameManager.IsPlayer1()))
         {
             gameManager.DisplayBoard();
             continue;
         }
         gameManager.DisplayBoard();
+        gameManager.CheckDraw();
         if (gameManager.GetGameState() != Playing)
         {
             switch (gameManager.GetGameState())

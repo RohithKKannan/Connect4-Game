@@ -33,6 +33,7 @@ class GameManager
 
 public:
     GameManager();
+    void Instructions();
     bool IsPlayer1();
     void ChangeTurn();
     void SetGameState(GameState);
@@ -43,6 +44,6 @@ public:
     bool CheckVertical(int, int, Token);
     bool CheckDiagonal(int, int, Token);
     bool CheckWin(int, int, Token);
-    bool CheckDraw();
+    void CheckDraw();
     ~GameManager();
 };

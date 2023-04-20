@@ -11,6 +11,14 @@ GameManager::GameManager()
         board[i] = new Cell[MAX_COLUMNS];
     }
 }
+void GameManager::Instructions()
+{
+    cout << "\nWelcome to Rohith's CONNECT-4 Game!\n";
+    cout << "***********************************\n";
+    cout << "\nInstructions";
+    cout << "\n************\n";
+    cout << "\nThe game is played on a vertical board that has seven columns and six rows. \nThe board is initially empty, with each column being able to hold up to six discs. \nTwo players take turns dropping their colored discs into the board from the top of the columns, with the discs falling to the lowest available position in the column. \nThe objective of the game is to be the first player to connect four of their own colored discs vertically, horizontally, or diagonally. \nOnce a player has connected four discs, they win the game. \nIf all of the columns are filled without either player connecting four discs, the game ends in a draw. \nPlayer 1 drops red (R) discs and Player 2 drops blue (B) discs.\n";
+}
 bool GameManager::IsPlayer1()
 {
     return p1Turn;
@@ -29,6 +37,12 @@ GameState GameManager::GetGameState()
 }
 void GameManager::DisplayBoard()
 {
+    cout << "\n ";
+    for (int i = 0; i < MAX_COLUMNS; i++)
+    {
+        cout << i + 1 << " ";
+    }
+    cout << endl;
     for (int i = 0; i < MAX_ROWS; i++)
     {
         for (int j = 0; j < MAX_COLUMNS; j++)
@@ -80,15 +94,15 @@ bool GameManager::InsertToken(int column, bool p1Turn)
     contents[column]++;
     return true;
 }
-bool GameManager::CheckDraw()
+void GameManager::CheckDraw()
 {
     for (int i = 0; i < MAX_COLUMNS; i++)
     {
         if (contents[i] != MAX_ROWS)
-            return false;
+            return;
     }
     SetGameState(Draw);
-    return true;
+    return;
 }
 bool GameManager::CheckHorizontal(int row, int col, Token currentToken)
 {
@@ -120,106 +134,47 @@ bool GameManager::CheckVertical(int row, int col, Token currentToken)
 }
 bool GameManager::CheckDiagonal(int row, int col, Token currentToken)
 {
-    // cout << "\nChecking Diagonal for ";
-    // if (currentToken == Blue)
-    //     cout << "Blue!\n";
-    // else
-    //     cout << "Red!\n";
     int count = 0;
-    // cout << "\nLeft to Right Diagonal : \n";
-    // cout << "Count : " << count << endl;
     for (int i = row, j = col; i > 0 && j > 0; i--, j--)
     {
         if (board[i][j].GetToken() == currentToken)
-        {
-            // cout << "Token found at row " << i + 1 << " and col " << j + 1 << endl;
-            // cout << "Count : " << count + 1 << endl;
             count++;
-        }
         else
-        {
-            // cout << "\tToken not found at row " << i + 1 << " and col " << j + 1 << endl;
-            // cout << "\tBreak half\n\n";
             break;
-        }
         if (count == WIN_COUNT)
-        {
-            // cout << "Count value is four! Winner found!\n";
             return true;
-        }
     }
     if (count != 0)
-    {
-        // cout << "Decrement count to " << count - 1 << endl;
         count--;
-    }
     for (int i = row, j = col; i < MAX_ROWS && j < MAX_COLUMNS; i++, j++)
     {
         if (board[i][j].GetToken() == currentToken)
-        {
-            // cout << "Token found at row " << i + 1 << " and col " << j + 1 << endl;
-            // cout << "Count : " << count + 1 << endl;
             count++;
-        }
         else
-        {
-            // cout << "\tToken not found at row " << i + 1 << " and col " << j + 1 << endl;
-            // cout << "\tBreak half\n\n";
             break;
-        }
         if (count == WIN_COUNT)
-        {
-            // cout << "Count value is four! Winner found!\n";
             return true;
-        }
     }
-    // cout << "\n\nRight to Left Diagonal : \n";
-    // cout << "Count : " << count << endl;
     count = 0;
     for (int i = row, j = col; i >= 0 && j < MAX_COLUMNS; i--, j++)
     {
         if (board[i][j].GetToken() == currentToken)
-        {
-            // cout << "Token found at row " << i + 1 << " and col " << j + 1 << endl;
-            // cout << "Count : " << count + 1 << endl;
             count++;
-        }
         else
-        {
-            // cout << "\tToken not found at row " << i + 1 << " and col " << j + 1 << endl;
-            // cout << "\tBreak half\n\n";
             break;
-        }
         if (count == WIN_COUNT)
-        {
-            // cout << "Count value is four! Winner found!\n";
             return true;
-        }
     }
     if (count != 0)
-    {
-        // cout << "Decrement count to " << count - 1 << endl;
         count--;
-    }
     for (int i = row, j = col; i < MAX_ROWS && j >= 0; i++, j--)
     {
         if (board[i][j].GetToken() == currentToken)
-        {
-            // cout << "Token found at row " << i + 1 << " and col " << j + 1 << endl;
-            // cout << "Count : " << count + 1 << endl;
             count++;
-        }
         else
-        {
-            // cout << "\tToken not found at row " << i + 1 << " and col " << j + 1 << endl;
-            // cout << "\tBreak half\n\n";
             break;
-        }
         if (count == WIN_COUNT)
-        {
-            // cout << "Count value is four! Winner found!\n";
             return true;
-        }
     }
     return false;
 }
