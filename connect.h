@@ -24,10 +24,24 @@ public:
     Token GetToken();
     void SetToken(Token token);
 };
-class GameManager
+class Board
 {
     Cell **board;
     int *contents;
+
+public:
+    Board();
+    bool InsertToken(int, bool);
+    void DisplayBoard();
+    bool CheckHorizontal(int, int, Token);
+    bool CheckVertical(int, int, Token);
+    bool CheckDiagonal(int, int, Token);
+    bool CheckDraw();
+    ~Board();
+};
+class GameManager
+{
+    Board *Connect4Board;
     bool p1Turn;
     GameState gameState;
 
@@ -38,12 +52,14 @@ public:
     void ChangeTurn();
     void SetGameState(GameState);
     GameState GetGameState();
-    bool InsertToken(int, bool);
     void DisplayBoard();
-    bool CheckHorizontal(int, int, Token);
-    bool CheckVertical(int, int, Token);
-    bool CheckDiagonal(int, int, Token);
     bool CheckWin(int, int, Token);
-    void CheckDraw();
     ~GameManager();
+};
+class GameController
+{
+    GameManager *gameManager;
+
+public:
+    void GameLoop();
 };
