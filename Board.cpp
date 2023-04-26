@@ -134,7 +134,7 @@ bool Board::CheckDiagonal(int row, int col, Token currentToken)
     }
     return false;
 }
-bool Board::CheckDraw()
+bool Board::CheckContentsMax()
 {
     for (int i = 0; i < MAX_COLUMNS; i++)
     {

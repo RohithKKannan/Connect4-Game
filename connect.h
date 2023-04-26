@@ -36,7 +36,7 @@ public:
     bool CheckHorizontal(int, int, Token);
     bool CheckVertical(int, int, Token);
     bool CheckDiagonal(int, int, Token);
-    bool CheckDraw();
+    bool CheckContentsMax();
     ~Board();
 };
 class GameManager
@@ -45,21 +45,19 @@ class GameManager
     bool p1Turn;
     GameState gameState;
 
-public:
-    GameManager();
+    bool GameLoop();
     void Instructions();
     bool IsPlayer1();
     void ChangeTurn();
     void SetGameState(GameState);
     GameState GetGameState();
     void DisplayBoard();
+    bool InsertToken();
+    bool CheckDraw();
     bool CheckWin(int, int, Token);
-    ~GameManager();
-};
-class GameController
-{
-    GameManager *gameManager;
 
 public:
-    void GameLoop();
+    GameManager();
+    void StartGame();
+    ~GameManager();
 };
